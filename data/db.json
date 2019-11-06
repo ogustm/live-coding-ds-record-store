@@ -1,5 +1,29 @@
 {
-  "records": [],
-  "users": [],
-  "orders": []
+  "records": [
+    {
+      "title": "Jesus is King",
+      "artist": "Kanye West",
+      "price": 8.99,
+      "year": 2019,
+      "id": "1573028727295"
+    }
+  ],
+  "users": [
+    {
+      "firstName": "Steve",
+      "lastName": "Stevenson",
+      "email": "steve@stevenson.com",
+      "password": "0123456789",
+      "birthday": "6/11/2000",
+      "id": "1573029636356"
+    }
+  ],
+  "orders": [
+    {
+      "date": "11/11/2019",
+      "user_id": "01111",
+      "records": [],
+      "id": "1573029224352"
+    }
+  ]
 }
