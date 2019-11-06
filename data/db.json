@@ -1,11 +1,18 @@
 {
   "records": [
     {
-      "title": "Jesus is King",
+      "title": "Jesus is King 1",
       "artist": "Kanye West",
       "price": 8.99,
       "year": 2019,
       "id": "1573028727295"
+    },
+    {
+      "title": "Whatever Kanye",
+      "artist": "Kanye West",
+      "price": 19.99,
+      "year": 2019,
+      "id": "1573036153562"
     }
   ],
   "users": [

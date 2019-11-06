@@ -18,3 +18,36 @@ exports.addRecord = (req, res, next) => {
 
   res.status(200).send(record);
 };
+
+exports.getRecord = (req, res, next) => {
+  const { id } = req.params;
+  const record = db
+    .get('records')
+    .find({ id })
+    .value();
+
+  res.status(200).send(record);
+};
+
+exports.deleteRecord = (req, res, next) => {
+  const { id } = req.params;
+  const record = db
+    .get('records')
+    .remove({ id })
+    .write();
+
+  res.status(200).send(record);
+};
+
+exports.updateRecord = (req, res, next) => {
+  const { id } = req.params;
+  const data = req.body;
+
+  const record = db
+    .get('records')
+    .find({ id })
+    .assign(data)
+    .write();
+
+  res.status(200).send(record);
+};

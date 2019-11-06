@@ -1,11 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const { getRecords, addRecord } = require('../controllers/recordsController');
+const {
+  getRecords,
+  addRecord,
+  getRecord,
+  deleteRecord,
+  updateRecord
+} = require('../controllers/recordsController');
 
-/** GET all the records */
-router.get('/', getRecords);
+router
+  .route('/')
+  .get(getRecords)
+  .post(addRecord);
 
-/** POST a new record */
-router.post('/', addRecord);
+router
+  .route('/:id')
+  .get(getRecord)
+  .delete(deleteRecord)
+  .put(updateRecord);
 
 module.exports = router;
