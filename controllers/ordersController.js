@@ -18,3 +18,36 @@ exports.addOrder = (req, res, next) => {
 
   res.status(200).send(order);
 };
+
+exports.getOrder = (req, res, next) => {
+  const { id } = req.params;
+  const order = db
+    .get('orders')
+    .find({ id })
+    .value();
+
+  res.status(200).send(order);
+};
+
+exports.deleteOrder = (req, res, next) => {
+  const { id } = req.params;
+  const order = db
+    .get('orders')
+    .remove({ id })
+    .write();
+
+  res.status(200).send(order);
+};
+
+exports.updateOrder = (req, res, next) => {
+  const { id } = req.params;
+  const data = req.body;
+
+  const order = db
+    .get('orders')
+    .find({ id })
+    .assign(data)
+    .write();
+
+  res.status(200).send(order);
+};

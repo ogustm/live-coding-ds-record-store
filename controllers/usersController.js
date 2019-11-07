@@ -18,3 +18,36 @@ exports.addUser = (req, res, next) => {
 
   res.status(200).send(user);
 };
+
+exports.getUser = (req, res, next) => {
+  const { id } = req.params;
+  const user = db
+    .get('users')
+    .find({ id })
+    .value();
+
+  res.status(200).send(user);
+};
+
+exports.deleteUser = (req, res, next) => {
+  const { id } = req.params;
+  const user = db
+    .get('users')
+    .remove({ id })
+    .write();
+
+  res.status(200).send(user);
+};
+
+exports.updateUser = (req, res, next) => {
+  const { id } = req.params;
+  const data = req.body;
+
+  const user = db
+    .get('users')
+    .find({ id })
+    .assign(data)
+    .write();
+
+  res.status(200).send(user);
+};
