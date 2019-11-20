@@ -26,7 +26,8 @@ app.use(logger('dev'));
 mongoose.connect('mongodb://localhost:27017/live-coding-ds', {
   useNewUrlParser: true,
   useCreateIndex: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useFindAndModify: false
 });
 
 mongoose.connection.on(
@@ -59,7 +60,6 @@ app.use('/records', recordsRouter);
 app.use('/orders', ordersRouter);
 
 /** ERROR HANDLING */
-
 app.use(function(req, res, next) {
   const err = new Error('Looks like something is broken...');
   next(err);

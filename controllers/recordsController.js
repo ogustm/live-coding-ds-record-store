@@ -2,6 +2,9 @@ const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 const adapter = new FileSync('data/db.json');
 const db = low(adapter);
+/////////////////////////////////
+const Record = require('../models/Record');
+const createError = require('http-errors');
 
 exports.getRecords = (req, res, next) => {
   const records = db.get('records').value();
