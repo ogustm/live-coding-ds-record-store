@@ -3,7 +3,10 @@ const createError = require('http-errors');
 
 exports.getUsers = async (req, res, next) => {
   try {
-    const users = await User.find();
+    const users = await User.find()
+      .select('-password -__v')
+      .sort('lastName')
+      .limit(5);
     res.status(200).send(users);
   } catch (e) {
     next(e);
