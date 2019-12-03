@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const UserSchema = new Schema(
   {
+    id: false,
     firstName: {
       type: String,
       required: true
@@ -36,6 +37,7 @@ const UserSchema = new Schema(
     },
     tokens: [
       {
+        _id: false,
         access: {
           type: String,
           required: true
@@ -72,6 +74,18 @@ UserSchema.methods.generateAuthToken = function() {
   user.tokens.push({ access, token });
 
   return token;
+};
+
+UserSchema.methods.getPublicFields = function() {
+  return {
+    _id: this._id,
+    lastName: this.lastName,
+    firstName: this.firstName,
+    email: this.email,
+    fullName: this.fullName,
+    birthday: new Date(this.birthday),
+    address: this.address
+  };
 };
 
 UserSchema.statics.findByToken = function(token) {

@@ -65,6 +65,7 @@ const Order = require('../models/Order');
         }
       });
 
+      const token = user.generateAuthToken();
       return user.save();
     });
 

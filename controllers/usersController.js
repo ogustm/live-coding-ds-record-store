@@ -4,9 +4,8 @@ const createError = require('http-errors');
 exports.getUsers = async (req, res, next) => {
   try {
     const users = await User.find()
-      .select('-password -__v')
       .sort('lastName')
-      .limit(5);
+      .select('-password -__v -tokens._id');
     res.status(200).send(users);
   } catch (e) {
     next(e);
@@ -15,7 +14,7 @@ exports.getUsers = async (req, res, next) => {
 
 exports.getUser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).select('-password -__v');
     if (!user) throw new createError.NotFound();
     res.status(200).send(user);
   } catch (e) {
@@ -27,7 +26,10 @@ exports.deleteUser = async (req, res, next) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
     if (!user) throw new createError.NotFound();
-    res.status(200).send(user);
+    res
+      .status(200)
+      .send(user)
+      .select('-password');
   } catch (e) {
     next(e);
   }
@@ -40,7 +42,8 @@ exports.updateUser = async (req, res, next) => {
       runValidators: true
     });
     if (!user) throw new createError.NotFound();
-    res.status(200).send(user);
+    const data = user.getPublicFields();
+    res.status(200).send(data);
   } catch (e) {
     next(e);
   }
@@ -51,10 +54,11 @@ exports.addUser = async (req, res, next) => {
     const user = new User(req.body);
     const token = user.generateAuthToken();
     await user.save();
+    const data = user.getPublicFields();
     res
       .status(200)
       .header('x-auth', token)
-      .send(user);
+      .send(data);
   } catch (e) {
     next(e);
   }
