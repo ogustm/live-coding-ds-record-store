@@ -16,7 +16,7 @@ router
 
 router
   .route('/:id')
-  .get(auth, getRecord)
+  .get(getRecord)
   .delete(auth, deleteRecord)
   .put(auth, updateRecord);
 
