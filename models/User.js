@@ -35,20 +35,7 @@ const UserSchema = new Schema(
     address: {
       type: Address,
       required: true
-    },
-    tokens: [
-      {
-        _id: false,
-        access: {
-          type: String,
-          required: true
-        },
-        token: {
-          type: String,
-          required: true
-        }
-      }
-    ]
+    }
   },
   {
     toJSON: {
@@ -72,9 +59,12 @@ UserSchema.methods.generateAuthToken = function() {
     .sign({ _id: user._id.toHexString(), access }, 'babylon')
     .toString();
 
-  user.tokens.push({ access, token });
-
   return token;
+};
+
+UserSchema.methods.checkPassword = async function(password) {
+  const user = this;
+  return await encryption.compare(password, user.password);
 };
 
 UserSchema.methods.getPublicFields = function() {
@@ -100,9 +90,7 @@ UserSchema.statics.findByToken = function(token) {
   }
 
   return User.findOne({
-    _id: decoded._id,
-    'tokens.token': token,
-    'tokens.access': decoded.access
+    _id: decoded._id
   });
 };
 

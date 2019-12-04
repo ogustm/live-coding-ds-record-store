@@ -12,7 +12,8 @@ const {
   getUser,
   deleteUser,
   updateUser,
-  authenticateUser
+  authenticateUser,
+  loginUser
 } = require('../controllers/usersController');
 
 router
@@ -21,6 +22,7 @@ router
   .post(userValidationRules(), userValidationErrorHandling, addUser);
 
 router.route('/me').get(auth, authenticateUser);
+router.route('/login').post(loginUser);
 
 router
   .route('/:id')

@@ -64,6 +64,27 @@ exports.addUser = async (req, res, next) => {
   }
 };
 
+exports.loginUser = async (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  try {
+    const user = await User.findOne({ email });
+    console.log(user);
+    const token = user.generateAuthToken();
+    const canLogin = await user.checkPassword(password);
+    if (!canLogin) throw new createError.NotFound();
+    const data = user.getPublicFields();
+
+    res
+      .status(200)
+      .header('x-auth', token)
+      .send(data);
+  } catch (e) {
+    next(e);
+  }
+};
+
 exports.authenticateUser = async (req, res, next) => {
   res.status(200).send(req.user);
 };
