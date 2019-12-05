@@ -2,9 +2,8 @@ const Record = require('../models/Record');
 const createError = require('http-errors');
 
 exports.getRecords = async (req, res, next) => {
-  const title = req.body.title;
   try {
-    const records = await Record.find({ title }).select('-__v');
+    const records = await Record.find().select('-__v');
     res.status(200).send(records);
   } catch (e) {
     next(e);
