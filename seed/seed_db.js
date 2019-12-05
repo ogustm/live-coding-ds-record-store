@@ -59,6 +59,7 @@ const Order = require('../models/Order');
         password: faker.internet.password(),
         birthday: faker.date.past(),
         userName: faker.internet.userName(),
+        role: faker.random.arrayElement(['Admin', 'User']),
         address: {
           city: faker.address.city(),
           street: faker.address.streetName()

@@ -6,6 +6,7 @@ const auth = async (req, res, next) => {
     const token = req.header('x-auth');
     const user = await User.findByToken(token);
     if (!user) throw new createError.NotFound();
+
     req.user = user;
     next();
   } catch (e) {

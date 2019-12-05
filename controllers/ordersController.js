@@ -2,6 +2,7 @@ const Order = require('../models/Order');
 const createError = require('http-errors');
 
 exports.getOrders = async (req, res, next) => {
+  // An Admin should get everybody's orders , a user only theirs
   try {
     const orders = await Order.find().populate('records.record', ' -__v');
     res.status(200).send(orders);

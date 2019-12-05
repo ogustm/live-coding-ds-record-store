@@ -5,6 +5,7 @@ const {
   userValidationErrorHandling
 } = require('../validators/validator');
 const auth = require('../middleware/authenticator');
+const isAdmin = require('../middleware/rolesAuthenticator');
 
 const {
   getUsers,
@@ -18,7 +19,7 @@ const {
 
 router
   .route('/')
-  .get(auth, getUsers)
+  .get(auth, isAdmin, getUsers)
   .post(userValidationRules(), userValidationErrorHandling, addUser);
 
 router.route('/me').get(auth, authenticateUser);

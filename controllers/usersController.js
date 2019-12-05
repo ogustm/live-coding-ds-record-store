@@ -24,6 +24,7 @@ exports.getUser = async (req, res, next) => {
 
 exports.deleteUser = async (req, res, next) => {
   try {
+    // What happens when an Admin want to delete a User's account??
     const user = await User.findByIdAndDelete(req.params.id);
     if (!user) throw new createError.NotFound();
     res
