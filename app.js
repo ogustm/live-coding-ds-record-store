@@ -12,8 +12,9 @@ const recordsRouter = require('./routes/records');
 const ordersRouter = require('./routes/orders');
 
 /** OUR MIDDLEWARE */
-const { setCors } = require('./middleware/security');
+// const { setCors } = require('./middleware/security');
 const env = require('./config/config');
+const cors = require('cors');
 
 /** INIT THE SERVER */
 const app = express();
@@ -42,7 +43,13 @@ mongoose.connection.on('open', () => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(setCors);
+// server.use(cors());
+app.use(
+  cors({
+    origin: ['http://localhost:3001', 'https://record-store-client.now.sh/'],
+    credentials: true
+  })
+);
 
 /** STATIC FILES */
 app.use(express.static(path.join(__dirname, 'public')));
