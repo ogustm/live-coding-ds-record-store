@@ -46,11 +46,7 @@ app.use(cookieParser());
 // server.use(cors());
 app.use(
   cors({
-    origin: [
-      'http://localhost:3001',
-      'https://record-store-client.now.sh/',
-      'https://record-store-client.wasabis.now.sh'
-    ],
+    origin: ['http://localhost:3001'],
     credentials: true
   })
 );
