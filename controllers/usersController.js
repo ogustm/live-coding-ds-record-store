@@ -95,3 +95,10 @@ exports.loginUser = async (req, res, next) => {
 exports.authenticateUser = async (req, res, next) => {
   res.status(200).send(req.user);
 };
+
+exports.logoutUser = async (req, res, next) => {
+  res
+    .clearCookie('token')
+    .status(200)
+    .send('Bye bye');
+};

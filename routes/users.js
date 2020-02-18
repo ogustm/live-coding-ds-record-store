@@ -14,7 +14,8 @@ const {
   deleteUser,
   updateUser,
   authenticateUser,
-  loginUser
+  loginUser,
+  logoutUser
 } = require('../controllers/usersController');
 
 router
@@ -24,6 +25,7 @@ router
 
 router.route('/me').get(auth, authenticateUser);
 router.route('/login').post(loginUser);
+router.route('/logout').post(auth, logoutUser);
 
 router
   .route('/:id')
