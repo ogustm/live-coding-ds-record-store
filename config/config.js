@@ -5,12 +5,12 @@ const config = {
 };
 
 const devConfig = {
-  db: 'mongodb://localhost:27017/botanica-database',
+  db: 'mongodb://localhost:27017/botanica',
   jwt_key: 'babylon'
 };
 
 const prodConfig = {
-  db: 'mongodb://localhost:27017/botanica-database',
+  db: 'mongodb://localhost:27017/botanica',
   jwt_key: 'babylon'
 };
 

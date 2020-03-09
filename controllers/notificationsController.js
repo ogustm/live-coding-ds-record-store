@@ -4,7 +4,7 @@ const createError = require('http-errors');
 exports.getNotifications = async (req, res, next) => {
   // An Admin should get everybody's orders , a user only theirs
   try {
-    const notifications = await Notification.find();
+    const notifications = await Notification.find().limit(10);
     res.status(200).send(notifications);
   } catch (e) {
     next(e);

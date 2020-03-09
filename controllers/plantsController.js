@@ -3,7 +3,9 @@ const createError = require('http-errors');
 
 exports.getPlants = async (req, res, next) => {
   try {
-    const plants = await Plant.find().select('-__v');
+    const plants = await Plant.find()
+      .select('-__v')
+      .limit(20);
     res.status(200).send(plants);
   } catch (e) {
     next(e);

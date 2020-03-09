@@ -9,7 +9,7 @@ const {
 } = require('../controllers/notificationsController');
 const auth = require('../middleware/authenticator');
 
-router.route('/').get(auth, getNotifications);
+router.route('/').get(getNotifications);
 // .post(auth, addNotification);
 
 router.route('/:id').get(auth, getNotification);
