@@ -6,12 +6,21 @@ const userValidationRules = () => {
       .isEmail()
       .exists()
       .normalizeEmail()
-      .withMessage('Do you call this an email?'),
+      .withMessage("That's not a valid email"),
     body('password')
       .isLength({ min: 10 })
       .withMessage('Your password should be 10 characters long.'),
-    body('firstName').trim(),
-    body('lastName').trim()
+    body('passwordConfirmation')
+      .equals(body('password'))
+      .withMessage('Password must match'),
+    body('firstName')
+      .trim()
+      .exists()
+      .withMessage('This field is required'),
+    body('lastName')
+      .trim()
+      .exists()
+      .withMessage('This field is required')
   ];
 };
 

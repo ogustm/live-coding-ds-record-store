@@ -52,6 +52,7 @@ exports.updateUser = async (req, res, next) => {
 
 exports.addUser = async (req, res, next) => {
   try {
+    console.log('controller adduser');
     const user = new User(req.body);
     const token = user.generateAuthToken();
     await user.save();
@@ -65,6 +66,7 @@ exports.addUser = async (req, res, next) => {
       })
       .send(data);
   } catch (e) {
+    console.log(e);
     next(e);
   }
 };
@@ -75,6 +77,10 @@ exports.loginUser = async (req, res, next) => {
 
   try {
     const user = await User.findOne({ email });
+    if (!user) {
+      res.status(404).send('User not found');
+      return;
+    } 
     const token = user.generateAuthToken();
     const canLogin = await user.checkPassword(password);
     if (!canLogin) throw new createError.NotFound();
@@ -88,6 +94,7 @@ exports.loginUser = async (req, res, next) => {
       })
       .send(data);
   } catch (e) {
+    console.log(e)
     next(e);
   }
 };

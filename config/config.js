@@ -6,13 +6,13 @@ const config = {
 };
 
 const devConfig = {
-  db: 'mongodb://localhost:27017/live-coding-ds',
+  db: 'mongodb://localhost:27017/botanica-database',
   jwt_key: 'babylon'
 };
 
 const prodConfig = {
   db:
-    'mongodb+srv://Wasabis:G5pTxd7B5dkQaq3Whvqe5ncch7XEj2@ds-record-store-cctch.mongodb.net/test?retryWrites=true&w=majority',
+    'mongodb://localhost:27017/botanica-database',
   jwt_key: 'babylon'
 };
 

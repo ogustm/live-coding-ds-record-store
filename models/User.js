@@ -29,18 +29,15 @@ const UserSchema = new Schema(
       type: Date
     },
     userName: {
-      type: String,
-      required: true,
-      unique: true
+      type: String    
     },
     role: {
       type: String,
-      enum: ['Admin', 'User'],
-      required: true
+      enum: ['User']      
     },
     address: {
       type: Address,
-      required: true
+      
     }
   },
   {

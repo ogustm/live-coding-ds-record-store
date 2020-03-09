@@ -50,7 +50,7 @@ app.use(
     credentials: true
   })
 );
-
+console.log(path);
 /** STATIC FILES */
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -62,7 +62,7 @@ app.use('/orders', ordersRouter);
 
 /** ERROR HANDLING */
 app.use(function(req, res, next) {
-  const err = new Error('Looks like something is broken...');
+  const err = new Error('Looks like something is broken...');  
   next(err);
 });
 
