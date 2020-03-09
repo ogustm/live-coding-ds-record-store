@@ -1,21 +1,18 @@
 const mongoose = require('mongoose');
 const faker = require('faker');
 const User = require('../models/User');
-const Record = require('../models/Record');
-const Order = require('../models/Order');
+const Plant = require('../models/Plant');
+const Notification = require('../models/Notification');
 
 (async function() {
   /** CONNECT TO MONGO */
-  mongoose.connect('mongodb://localhost:27017/live-coding-ds', {
+  mongoose.connect('mongodb://localhost:27017/botanica', {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
   });
 
-  mongoose.connection.on(
-    'error',
-    console.error.bind(console, 'connection error:')
-  );
+  mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 
   mongoose.connection.on('open', () => {
     console.log(`Connected to the database...`);
@@ -31,21 +28,22 @@ const Order = require('../models/Order');
     console.log(e);
   }
 
-  /** DELETE ALL RECORDS */
+  /** DELETE ALL PLANTS */
   try {
-    await Record.deleteMany({});
-    console.log('Old records moved to a better place. Spandau');
+    await Plant.deleteMany({});
+    console.log('Old plants moved to a better place. Spandau');
   } catch (e) {
     console.log(e);
   }
 
-  /** DELETE ALL ORDERS */
+  /** DELETE ALL NOTIFICATIONS */
   try {
-    await Order.deleteMany({});
-    console.log('Old orders moved to a better place. Spandau');
+    await Notification.deleteMany({});
+    console.log('Old notifications moved to a better place. Spandau');
   } catch (e) {
     console.log(e);
   }
+
   console.log(`I am creating 20 fake users`);
 
   /** CREATE 20 FAKE USERS */
@@ -56,14 +54,9 @@ const Order = require('../models/Order');
         firstName: faker.name.firstName(),
         lastName: faker.name.lastName(),
         email: faker.internet.email(),
-        password: faker.internet.password(),
-        birthday: faker.date.past(),
+        password: 'botanica',
         userName: faker.internet.userName(),
-        role: faker.random.arrayElement(['Admin', 'User']),
-        address: {
-          city: faker.address.city(),
-          street: faker.address.streetName()
-        }
+        role: faker.random.arrayElement(['Admin', 'User'])
       });
 
       const token = user.generateAuthToken();
@@ -79,25 +72,52 @@ const Order = require('../models/Order');
 
   console.log(`I am creating 20 fake records`);
 
-  /** CREATE 20 FAKE RECORDS */
-  const recordPromises = Array(20)
-    .fill(null)
-    .map(() => {
-      const record = new Record({
-        title: faker.random.words(),
-        artist: faker.internet.userName(),
-        year: new Date(faker.date.past()).getFullYear(),
-        price: faker.finance.amount()
+  /** CREATE 10 FAKE PLANTS FOR EACH USER */
+  const allUsers = await User.find();
+  for (const user of allUsers) {
+    const plantsPromises = Array(10)
+      .fill(null)
+      .map(() => {
+        const plant = new Plant({
+          userId: user._id,
+          name: faker.random.words(),
+          image: `https://i.picsum.photos/id/${faker.random.number({ min: 0, max: 800 })}/400/400.jpg`,
+          waterFrequency: faker.random.number({ min: 2, max: 10 })
+        });
+
+        return plant.save();
       });
 
-      return record.save();
-    });
+    try {
+      await Promise.all(plantsPromises);
+      console.log(`Plants for ${user.firstName} ${user.lastName} stored in the database!`);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
-  try {
-    await Promise.all(recordPromises);
-    console.log('Records stored in the database!');
-  } catch (e) {
-    console.log(e);
+  /** CREATE SOME FAKE NOTIFICATIONS */
+  const allPlants = await Plant.find();
+  for (const plant of allPlants) {
+    const notPromises = Array(5)
+      .fill(null)
+      .map(() => {
+        const notification = new Notification({
+          userId: plant.userId,
+          plantId: plant._id,
+          message: `Hey don't forget to water your friend, ${plant.name}`,
+          seen: false
+        });
+
+        return notification.save();
+      });
+
+    try {
+      await Promise.all(notPromises);
+      console.log(`Create 5 notifications for your plant, ${plant.name}`);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   mongoose.connection.close();
