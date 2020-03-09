@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
-const Address = require('./Address');
 const jwt = require('jsonwebtoken');
 const encryption = require('../lib/encryption');
 const env = require('../config/config');
@@ -25,19 +24,12 @@ const UserSchema = new Schema(
       type: String,
       required: true
     },
-    birthday: {
-      type: Date
-    },
     userName: {
-      type: String    
+      type: String
     },
     role: {
       type: String,
-      enum: ['User']      
-    },
-    address: {
-      type: Address,
-      
+      enum: ['Admin', 'User']
     }
   },
   {
@@ -58,9 +50,7 @@ UserSchema.methods.generateAuthToken = function() {
   const user = this;
   const access = 'x-auth';
 
-  const token = jwt
-    .sign({ _id: user._id.toHexString(), access }, env.jwt_key)
-    .toString();
+  const token = jwt.sign({ _id: user._id.toHexString(), access }, env.jwt_key).toString();
 
   return token;
 };
@@ -76,9 +66,7 @@ UserSchema.methods.getPublicFields = function() {
     lastName: this.lastName,
     firstName: this.firstName,
     email: this.email,
-    fullName: this.fullName,
-    birthday: new Date(this.birthday),
-    address: this.address
+    fullName: this.fullName
   };
 };
 

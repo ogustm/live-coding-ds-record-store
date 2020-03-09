@@ -8,8 +8,8 @@ const mongoose = require('mongoose');
 /** ROUTERS */
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const recordsRouter = require('./routes/records');
-const ordersRouter = require('./routes/orders');
+const plantsRouter = require('./routes/plants');
+const notificationsRouter = require('./routes/notifications');
 
 /** OUR MIDDLEWARE */
 // const { setCors } = require('./middleware/security');
@@ -30,10 +30,7 @@ mongoose.connect(env.db, {
   useFindAndModify: false
 });
 
-mongoose.connection.on(
-  'error',
-  console.error.bind(console, 'connection error:')
-);
+mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 
 mongoose.connection.on('open', () => {
   console.log(`Connected to the database...`);
@@ -50,19 +47,19 @@ app.use(
     credentials: true
   })
 );
-console.log(path);
+
 /** STATIC FILES */
 app.use(express.static(path.join(__dirname, 'public')));
 
 /** ROUTES */
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/records', recordsRouter);
-app.use('/orders', ordersRouter);
+app.use('/plants', plantsRouter);
+app.use('/notifications', notificationsRouter);
 
 /** ERROR HANDLING */
 app.use(function(req, res, next) {
-  const err = new Error('Looks like something is broken...');  
+  const err = new Error('Looks like something is broken...');
   next(err);
 });
 

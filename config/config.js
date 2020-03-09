@@ -1,5 +1,4 @@
 const { env } = process;
-console.log(env.NODE_ENV);
 
 const config = {
   env: env.NODE_ENV || 'development'
@@ -11,8 +10,7 @@ const devConfig = {
 };
 
 const prodConfig = {
-  db:
-    'mongodb://localhost:27017/botanica-database',
+  db: 'mongodb://localhost:27017/botanica-database',
   jwt_key: 'babylon'
 };
 
