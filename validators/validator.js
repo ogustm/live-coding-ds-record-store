@@ -10,9 +10,12 @@ const userValidationRules = () => {
     body('password')
       .isLength({ min: 10 })
       .withMessage('Your password should be 10 characters long.'),
-    body('passwordConfirmation')
-      .equals(body('password'))
-      .withMessage('Password must match'),
+    body('passwordConfirmation').custom((value, { req }) => {
+      if (value !== req.body.password) {
+        throw new Error('Password must match');
+      }
+      return true;
+    }),
     body('firstName')
       .trim()
       .exists()
@@ -25,6 +28,7 @@ const userValidationRules = () => {
 };
 
 const userValidationErrorHandling = (req, res, next) => {
+  console.log(req.body);
   const errors = validationResult(req);
   if (errors.isEmpty()) {
     return next();

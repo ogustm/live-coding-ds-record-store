@@ -97,7 +97,8 @@ exports.loginUser = async (req, res, next) => {
 };
 
 exports.authenticateUser = async (req, res, next) => {
-  res.status(200).send(req.user);
+  const data = req.user.getPublicFields();
+  res.status(200).send(data);
 };
 
 exports.logoutUser = async (req, res, next) => {
